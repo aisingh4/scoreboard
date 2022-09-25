@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const redisClient = require('../db/redis');
 const Score = require('../models/score');
+const logger = require('../log/logger');
 
 /**
  * @description Deletes the user and its score from the persistent storage,
@@ -13,15 +14,16 @@ const Score = require('../models/score');
     
     Score.deleteOne({userId: req.params.userId}, (err, response)=> {
         if (err) {
-            console.log("User could not be deleted from Collections.", err);
+            logger.info("User could not be deleted from Collections.", err);
             res.status(400).send({error: "User could not be deleted"});
         } else {
             redisClient.zrem('scores', req.params.userId, function(err) {
                 if (err) {
-                    console.log("User could not be removed from sorted set.", err);
+                    logger.info("User could not be removed from sorted set.", err);
                     res.status(400).send({error: "User could not be deleted"});
                 }
-                 res.status(200).send(req.params.userId + ' is removed');
+                logger.info(req.params.userId + ' is removed');
+                res.status(200).send(req.params.userId + ' is removed');
             })
             //redisClient.del(req.params.userId);
         }

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const redisClient = require('../db/redis');
+const logger = require('../log/logger');
 const { promisify } = require('util');
 
 /**
@@ -12,10 +13,13 @@ const { promisify } = require('util');
 router.get('/', (req, res, next) => {
     redisClient.zrevrange('scores', 0, 4, 'withscores', function(err, topscores){  
         if (err) {
-            console.log('Scoreboard cannot be generated' + err);
+            logger.info('Scoreboard cannot be generated' + err);
             res.status(400).send({error: 'Scoreboard cannot be generated'});
         }
-        Promise.resolve(getScores(topscores)).then(function(result) {res.status(200).send(result)});
+        Promise.resolve(getScores(topscores)).then((result) => {
+            logger.info('Scoreboard generated');
+            res.status(200).send(result)
+        });
     });
 });
 

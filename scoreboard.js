@@ -1,5 +1,4 @@
 const express = require("express");
-const mongodb = require('./db/mongodb');
 
 const fetchScores = require('./routes/fetchScores');
 const fetchRank = require('./routes/fetchRank');

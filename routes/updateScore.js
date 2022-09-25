@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const redisClient = require('../db/redis');
 const Score = require('../models/score');
+const logger = require('../log/logger');
 
 /**
  * @description If the user does not already exists,
@@ -20,15 +21,16 @@ const Score = require('../models/score');
  router.post('/', (req, res, next) => {
     Score.updateOne({ userId: req.body.userId}, {points: req.body.points}, {upsert: true}, ((err) => {
         if(err){
-            console.log('Score cannot be created/updated in the Collections',err);
+            logger.info('Score cannot be created/updated in the Collections',err);
             res.status(400).send({error: 'Score cannot be created/updated'});
         }
         redisClient.zadd('scores', req.body.points, req.body.userId, ((err)=>{
             if(err){
-                console.log('Score cannot be created/updated in the ordered set', err);
+                logger.info('Score cannot be created/updated in the ordered set', err);
                 res.status(400).res.send({error: 'Score cannot be created/updated'});
             }
-            res.status(200).send('Score created/updated');
+            logger.info('Score created/updated for ' +   req.body.userId);
+            res.status(200).send('Score created/updated for ' + req.body.userId);
         }));
     }));
 })

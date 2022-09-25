@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const redisClient = require('../db/redis');
+const logger = require('../log/logger');
 
 /**
  * @description Fetches the rank of the user
@@ -12,10 +13,11 @@ const redisClient = require('../db/redis');
  router.get('/:userId', (req, res, next) => {
     redisClient.zrevrank('scores', req.params.userId, (err, rank) => {
         if (err) {
-            console.log('Rank cannot be fetched', err);
+            logger.info('Rank cannot be fetched', err);
             res.status(400).send({error: 'Rank cannot be fetched'});
         } 
         var playerRank = req.params.userId + " rank is: " + modifyPlayerRank(rank+1);
+        logger.info(playerRank);
         res.status(200).send(playerRank);
     })
 })
