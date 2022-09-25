@@ -17,6 +17,7 @@ npm start
 ## Collections/Tables
 
 There need to be two collections in MongoDB:
+
 	-> scores: (userId: string, points: string)
 	-> users: (userId: string, name: string, country: string)
 
@@ -24,6 +25,7 @@ There need to be two collections in MongoDB:
 ## Endpoints
 
 There are 4 different endpoints in the project.
+
 1]	GET - Fetches top 5 scores as a list of JSON objects.
 	/leaderboard
 
