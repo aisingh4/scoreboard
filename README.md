@@ -27,10 +27,10 @@ There need to be two collections in MongoDB:
 There are 4 different endpoints in the project.
 
 1]	GET - Fetches top 5 scores as a list of JSON objects.
-	/leaderboard
+	/scoreboard
 
 	Example: 
-	http://localhost:3000/leaderboard
+	http://localhost:3000/scoreboard
 	=>
 	[{"name":"Aishwarya Singh","score":"2000"},{"name":"Shubham Maurya","score":"1700"},{"name":"Aman Singh","score":"1600"},{"name":"Richa Verma","score":"1500"},{"name":"Asha Kushwaha","score":"1200"}]
 	
